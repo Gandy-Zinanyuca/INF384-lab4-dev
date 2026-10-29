@@ -1,6 +1,19 @@
-const { test } = require('node:test');
+const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
+const { mkdtempSync, rmSync } = require('node:fs');
+const { tmpdir } = require('node:os');
+const { join } = require('node:path');
+
+const directorioDB = mkdtempSync(join(tmpdir(), 'monedero-integration-'));
+process.env.DB_PATH = join(directorioDB, 'wallet.db');
+
+const { cerrarStore } = require('../../src/db');
 const { handler } = require('../../src/handler');
+
+after(() => {
+  cerrarStore();
+  rmSync(directorioDB, { recursive: true, force: true });
+});
 
 async function llamar(metodo, ruta, cuerpo) {
   const r = await handler({

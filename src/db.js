@@ -66,7 +66,7 @@ function obtenerStore() {
   const ruta = process.env.DB_PATH || RUTA_POR_DEFECTO;
   if (!abierta || abierta.ruta !== ruta) {
     if (abierta) {
-      abierta.db.close();
+      cerrarStore();
     }
     const db = abrir(ruta);
     abierta = { ruta, db, store: crearStore(db) };
@@ -74,4 +74,11 @@ function obtenerStore() {
   return abierta.store;
 }
 
-module.exports = { obtenerStore };
+function cerrarStore() {
+  if (abierta) {
+    abierta.db.close();
+    abierta = null;
+  }
+}
+
+module.exports = { obtenerStore, cerrarStore };
