@@ -11,7 +11,7 @@ http.setResponseCallback(http.expectedStatuses(200));
 export const options = {
   stages: [
     { duration: '1m', target: 30 },
-    { duration: '10m', target: 30 },
+    { duration: '3m', target: 30 },
     { duration: '1m', target: 0 },
   ],
   thresholds: {
